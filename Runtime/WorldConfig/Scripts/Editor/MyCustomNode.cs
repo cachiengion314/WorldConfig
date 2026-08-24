@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using System;
 using Unity.GraphToolkit.Editor;
 
@@ -25,3 +26,4 @@ public class MyCustomNode : Node
     context.AddOutputPort<float>("Result").Build();
   }
 }
+#endif
