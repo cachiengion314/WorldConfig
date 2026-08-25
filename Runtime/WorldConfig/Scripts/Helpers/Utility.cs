@@ -2,30 +2,30 @@ using System;
 using UnityEngine;
 using Unity.Mathematics;
 
-public enum ColorIndex
+namespace HoangNam.WorldConfig
 {
-  None,
-  White,
-  Black,
-  Gray,
-  Blue,
-  Red,
-  Green,
-  Yellow,
-  Cyan,
-  Magenta,
-  Orange,
-  Lime,
-  Purple,
-  Pink,
-  Azure,
-  Beige,
-  Chocolate,
-  Coral
-}
+  public enum ColorIndex
+  {
+    None,
+    White,
+    Black,
+    Gray,
+    Blue,
+    Red,
+    Green,
+    Yellow,
+    Cyan,
+    Magenta,
+    Orange,
+    Lime,
+    Purple,
+    Pink,
+    Azure,
+    Beige,
+    Chocolate,
+    Coral
+  }
 
-namespace HoangNam
-{
   public static partial class Helper
   {
     public static void Print(in object o)

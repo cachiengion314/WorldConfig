@@ -1,7 +1,7 @@
 using Unity.Collections;
 using Unity.Mathematics;
 
-namespace HoangNam
+namespace HoangNam.WorldConfig
 {
   public static partial class Helper
   {

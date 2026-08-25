@@ -4,7 +4,7 @@ using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
-namespace HoangNam
+namespace HoangNam.WorldConfig
 {
   /// <summary>
   /// Custom editor that scans any MonoBehaviour for [Button]-decorated methods

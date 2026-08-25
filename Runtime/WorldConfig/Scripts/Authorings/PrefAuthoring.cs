@@ -1,18 +1,21 @@
 using UnityEngine;
 using Unity.Entities;
 
-public class PrefAuthoring : MonoBehaviour
+namespace HoangNam.WorldConfig
 {
-  class Baker : Baker<PrefAuthoring>
+  public class PrefAuthoring : MonoBehaviour
   {
-    public override void Bake(PrefAuthoring authoring)
+    class Baker : Baker<PrefAuthoring>
     {
-      var entity = GetEntity(TransformUsageFlags.Dynamic);
+      public override void Bake(PrefAuthoring authoring)
+      {
+        var entity = GetEntity(TransformUsageFlags.Dynamic);
 
-      AddComponent(entity, new LinkedParent { Value = Entity.Null });
-      AddComponent(entity, new LinkedGrandParent { Value = Entity.Null });
-      AddComponent<CanRun>(entity);
-      SetComponentEnabled<CanRun>(entity, true);
+        AddComponent(entity, new LinkedParent { Value = Entity.Null });
+        AddComponent(entity, new LinkedGrandParent { Value = Entity.Null });
+        AddComponent<CanRun>(entity);
+        SetComponentEnabled<CanRun>(entity, true);
+      }
     }
   }
 }

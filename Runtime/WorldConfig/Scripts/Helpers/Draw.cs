@@ -1,7 +1,7 @@
 using UnityEngine;
 using Unity.Mathematics;
 
-namespace HoangNam
+namespace HoangNam.WorldConfig
 {
   public static partial class Helper
   {
@@ -13,7 +13,7 @@ namespace HoangNam
       float duration = .0f)
     {
 #if UNITY_EDITOR
-      var color = HoangNam.Helper.GetColorFrom(colorIndex);
+      var color = Helper.GetColorFrom(colorIndex);
       color.a = colorAlpha;
       Debug.DrawLine(start, end, color, duration);
 #endif
@@ -28,7 +28,7 @@ namespace HoangNam
     )
     {
 #if UNITY_EDITOR
-      var color = HoangNam.Helper.GetColorFrom(colorIndex);
+      var color = Helper.GetColorFrom(colorIndex);
       color.a = colorAlpha;
       Debug.DrawRay(start, dir, color, duration);
 #endif
@@ -43,7 +43,7 @@ namespace HoangNam
       float duration = 0f)
     {
 #if UNITY_EDITOR
-      var color = HoangNam.Helper.GetColorFrom(colorIndex);
+      var color = Helper.GetColorFrom(colorIndex);
       color.a = colorAlpha;
       if (segments < 3) segments = 3;
       if (radius <= 0f)
@@ -88,7 +88,7 @@ namespace HoangNam
       float duration = 0f)
     {
 #if UNITY_EDITOR
-      var color = HoangNam.Helper.GetColorFrom(colorIndex);
+      var color = Helper.GetColorFrom(colorIndex);
       color.a = colorAlpha;
       if (segments < 3) segments = 3;
 

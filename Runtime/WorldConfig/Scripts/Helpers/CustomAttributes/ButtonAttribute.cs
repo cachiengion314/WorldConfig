@@ -1,6 +1,6 @@
 using System;
 
-namespace HoangNam
+namespace HoangNam.WorldConfig
 {
   /// <summary>
   /// Marks a method to be invokable via a button in the Unity Inspector.

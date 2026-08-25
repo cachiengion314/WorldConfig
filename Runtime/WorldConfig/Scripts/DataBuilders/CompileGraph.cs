@@ -1,14 +1,17 @@
 using System;
 using UnityEngine;
 
-public class CompiledGraph : ScriptableObject
+namespace HoangNam.WorldConfig
 {
-  public NodeData[] nodes;
-}
+  public class CompiledGraph : ScriptableObject
+  {
+    public NodeData[] nodes;
+  }
 
-[Serializable]
-public struct NodeData
-{
-  public string name;
-  public float value;
+  [Serializable]
+  public struct NodeData
+  {
+    public string name;
+    public float value;
+  }
 }

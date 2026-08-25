@@ -1,19 +1,22 @@
 using UnityEngine;
 
-public class FrameRateLimiter : MonoBehaviour
+namespace HoangNam.WorldConfig
 {
-  [SerializeField] bool UseInEditor;
-  [Range(1, 120)]
-  [SerializeField] int TargetFrameRate = 60;
-
-  void Awake()
+  public class FrameRateLimiter : MonoBehaviour
   {
+    [SerializeField] bool UseInEditor;
+    [Range(1, 120)]
+    [SerializeField] int TargetFrameRate = 60;
+
+    void Awake()
+    {
 #if UNITY_EDITOR
-    if (!UseInEditor)
-      return;
+      if (!UseInEditor)
+        return;
 #endif
 
-    Application.targetFrameRate = TargetFrameRate;
-    QualitySettings.vSyncCount = 0;
+      Application.targetFrameRate = TargetFrameRate;
+      QualitySettings.vSyncCount = 0;
+    }
   }
 }

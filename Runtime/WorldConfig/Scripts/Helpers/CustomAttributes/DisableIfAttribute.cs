@@ -1,28 +1,31 @@
 using UnityEngine;
 using UnityEditor;
 
-public class DisableIfAttribute : PropertyAttribute
+namespace HoangNam.WorldConfig
 {
-  public string ConditionField;
-  public DisableIfAttribute(string conditionField)
+  public class DisableIfAttribute : PropertyAttribute
   {
-    ConditionField = conditionField;
+    public string ConditionField;
+    public DisableIfAttribute(string conditionField)
+    {
+      ConditionField = conditionField;
+    }
   }
-}
 
 #if UNITY_EDITOR
-[CustomPropertyDrawer(typeof(DisableIfAttribute))]
-public class DisableIfDrawer : PropertyDrawer
-{
-  public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+  [CustomPropertyDrawer(typeof(DisableIfAttribute))]
+  public class DisableIfDrawer : PropertyDrawer
   {
-    var attr = (DisableIfAttribute)attribute;
-    var conditionProp = property.serializedObject.FindProperty(attr.ConditionField);
+    public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+    {
+      var attr = (DisableIfAttribute)attribute;
+      var conditionProp = property.serializedObject.FindProperty(attr.ConditionField);
 
-    var wasEnabled = GUI.enabled;
-    GUI.enabled = conditionProp != null && !conditionProp.boolValue; // negated
-    EditorGUI.PropertyField(position, property, label, true);
-    GUI.enabled = wasEnabled;
+      var wasEnabled = GUI.enabled;
+      GUI.enabled = conditionProp != null && !conditionProp.boolValue; // negated
+      EditorGUI.PropertyField(position, property, label, true);
+      GUI.enabled = wasEnabled;
+    }
   }
-}
 #endif
+}
