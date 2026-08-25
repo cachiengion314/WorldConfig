@@ -27,7 +27,7 @@ public partial class StaticGridDebug : MonoBehaviour
 
   private void OnDrawGizmos()
   {
-    if (!Show) return;
+    if (!Show || AuthoringGrids == null) return;
 
     Gizmos.color = DebugCellColor;
 
