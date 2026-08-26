@@ -1,14 +1,17 @@
 using Unity.Entities;
 
-public struct CellData : IComponentData
+namespace HoangNam.WorldConfig
 {
-  public int Index;
-  public int Count;
-  public int CombinedMask;
-}
+  public struct CellData : IComponentData
+  {
+    public int Index;
+    public int Count;
+    public int CombinedMask;
+  }
 
-public struct TrackedData
-{
-  public Entity Entity;
-  public int Mask;
+  public struct TrackedData
+  {
+    public Entity Entity;
+    public int Mask;
+  }
 }

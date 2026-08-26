@@ -101,8 +101,7 @@ namespace HoangNam.WorldConfig
       var targetPos = path[targetIdx];
       InterpolateMoveInUpdate(
         currentPos, startPos, targetPos, speed, dt,
-        out var percent, out var nextPosition
-      );
+        out var percent, out var nextPosition);
       t = (currentIdx + percent) / math.max(maxIdx, 1);
       nextPos = nextPosition;
       if (percent < 1)
@@ -113,41 +112,10 @@ namespace HoangNam.WorldConfig
       nextIdx = currentIdx + 1;
     }
 
-    public static float3x3 BuildMatrixBy(float3 degAround, float3x3 scale)
-    {
-      var degX = -degAround.x * math.PI / 180f;
-      var degY = -degAround.y * math.PI / 180f;
-      var degZ = -degAround.z * math.PI / 180f;
-
-      var Mx = new float3x3(
-        new float3(1, 0, 0),
-        new float3(0, math.cos(degX), -math.sin(degX)),
-        new float3(0, math.sin(degX), math.cos(degX))
-      );
-
-      var My = new float3x3(
-        new float3(math.cos(degY), 0, math.sin(degY)),
-        new float3(0, 1, 0),
-        new float3(-math.sin(degY), 0, math.cos(degY))
-      );
-
-      var Mz = new float3x3(
-        new float3(math.cos(degZ), math.sin(degZ), 0),
-        new float3(-math.sin(degZ), math.cos(degZ), 0),
-        new float3(0, 0, 1)
-      );
-
-      return math.mul(math.mul(Mx, My), math.mul(Mz, scale));
-    }
-
     /// <summary>
     /// return basic axis directions in world space of an imagine object by a given quaternion
     /// </summary>
-    /// <param name="rotation"></param>
-    /// <param name="right"></param>
-    /// <param name="up"></param>
-    /// <param name="forward"></param>
-    public static void GetBasisAxisesBy(
+    public static void BuildOrthonormalBasisesBy(
       quaternion rotation,
       out float3 right,
       out float3 up,

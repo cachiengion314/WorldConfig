@@ -1,21 +1,24 @@
 using UnityEngine;
 using Unity.Entities;
 
-public partial class CellWorldAuthoring : MonoBehaviour
+namespace HoangNam.WorldConfig
 {
-  public StaticGrid Grid;
-
-  class Baker : Baker<CellWorldAuthoring>
+  public partial class CellWorldAuthoring : MonoBehaviour
   {
-    public override void Bake(CellWorldAuthoring authoring)
+    public StaticGrid Grid;
+
+    class Baker : Baker<CellWorldAuthoring>
     {
-      var e = GetEntity(TransformUsageFlags.None);
-      AddComponent(e, new StaticGrid
+      public override void Bake(CellWorldAuthoring authoring)
       {
-        CellSize = authoring.Grid.CellSize,
-        Origin = authoring.Grid.Origin,
-        Resolution = authoring.Grid.Resolution,
-      });
+        var e = GetEntity(TransformUsageFlags.None);
+        AddComponent(e, new StaticGrid
+        {
+          CellSize = authoring.Grid.CellSize,
+          Origin = authoring.Grid.Origin,
+          Resolution = authoring.Grid.Resolution,
+        });
+      }
     }
   }
 }

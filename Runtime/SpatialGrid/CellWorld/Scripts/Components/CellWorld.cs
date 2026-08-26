@@ -1,7 +1,7 @@
 ﻿using Unity.Entities;
 using Unity.Collections;
 
-namespace HoangNam
+namespace HoangNam.WorldConfig
 {
   public struct CellWorld : IComponentData
   {
