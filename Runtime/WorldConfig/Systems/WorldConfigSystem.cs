@@ -3,7 +3,7 @@ using Unity.Entities;
 
 namespace HoangNam.WorldConfig
 {
-  [UpdateInGroup(typeof(SimulationSystemGroup), OrderFirst = true)]
+  [UpdateInGroup(typeof(WritableSystemGroup), OrderFirst = true)]
   public partial struct WorldConfigSystem : ISystem
   {
     public void OnCreate(ref SystemState state)
