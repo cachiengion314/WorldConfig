@@ -1,0 +1,17 @@
+{
+  "name": "com.cachiengion314.worldconfig",
+  "version": "1.0.0",
+  "displayName": "WorldConfig",
+  "description": "Core logic for every stuffs that can be base on",
+  "author": {
+    "name": "HoangNam"
+  },
+  "unity": "6000.5",
+  "unityRelease": "7f1",
+  "dependencies": {
+    "com.unity.entities": "6.5.0",
+    "com.unity.burst": "1.8.30",
+    "com.unity.mathematics": "1.4.0",
+    "com.unity.collections": "6.5.0"
+  }
+}
