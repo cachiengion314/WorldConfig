@@ -13,7 +13,7 @@ namespace HoangNam.WorldConfig
       float duration = .0f)
     {
 #if UNITY_EDITOR
-      var color = Helper.GetColorFrom(colorIndex);
+      var color = GetColorFrom(colorIndex);
       color.a = colorAlpha;
       Debug.DrawLine(start, end, color, duration);
 #endif
@@ -24,16 +24,16 @@ namespace HoangNam.WorldConfig
       float3 dir,
       ColorIndex colorIndex = 0,
       float colorAlpha = 1.0f,
-      float duration = 0f
-    )
+      float duration = 0f)
     {
 #if UNITY_EDITOR
-      var color = Helper.GetColorFrom(colorIndex);
+      var color = GetColorFrom(colorIndex);
       color.a = colorAlpha;
       Debug.DrawRay(start, dir, color, duration);
 #endif
     }
 
+    // Circle on the XY plane
     public static void DrawCircle(
       float3 center,
       float radius,
@@ -43,7 +43,7 @@ namespace HoangNam.WorldConfig
       float duration = 0f)
     {
 #if UNITY_EDITOR
-      var color = Helper.GetColorFrom(colorIndex);
+      var color = GetColorFrom(colorIndex);
       color.a = colorAlpha;
       if (segments < 3) segments = 3;
       if (radius <= 0f)
@@ -52,12 +52,13 @@ namespace HoangNam.WorldConfig
         return;
       }
 
-      float angleStep = 2f * math.PI / segments;
-      float3 prev = center + new float3(radius, 0f, 0f);
-      for (int i = 1; i <= segments; ++i)
+      var angleStep = 2f * math.PI / segments;
+      var prev = center + new float3(radius, 0f, 0f);
+      for (var i = 1; i <= segments; ++i)
       {
-        float angle = angleStep * i;
-        float3 next = center + new float3(math.cos(angle) * radius, math.sin(angle) * radius, 0f);
+        var angle = angleStep * i;
+        var next = center + new float3(
+          math.cos(angle) * radius, math.sin(angle) * radius, 0f);
         Debug.DrawLine(prev, next, color, duration);
         prev = next;
       }
@@ -68,13 +69,13 @@ namespace HoangNam.WorldConfig
       float2 center,
       float radius,
       ColorIndex colorIndex = 0,
-      float colorALpha = 1.0f,
+      float colorAlpha = 1.0f,
       int segments = 24,
       float duration = 0f)
     {
 #if UNITY_EDITOR
       DrawCircle(new float3(center.x, center.y, 0f),
-        radius, colorIndex, colorALpha, segments, duration);
+        radius, colorIndex, colorAlpha, segments, duration);
 #endif
     }
 
@@ -88,29 +89,30 @@ namespace HoangNam.WorldConfig
       float duration = 0f)
     {
 #if UNITY_EDITOR
-      var color = Helper.GetColorFrom(colorIndex);
+      var color = GetColorFrom(colorIndex);
       color.a = colorAlpha;
       if (segments < 3) segments = 3;
 
-      float3 n = math.normalizesafe(normal);
+      var n = math.normalizesafe(normal);
       if (radius <= 0f)
       {
         Debug.DrawLine(center, center + n * 0.01f, color, duration);
         return;
       }
 
-      float3 tangent = math.cross(n, new float3(0f, 1f, 0f));
+      var tangent = math.cross(n, new float3(0f, 1f, 0f));
       if (math.lengthsq(tangent) < 1e-6f)
         tangent = math.cross(n, new float3(1f, 0f, 0f));
       tangent = math.normalizesafe(tangent);
-      float3 bitangent = math.cross(n, tangent);
+      var bitangent = math.cross(n, tangent);
 
-      float angleStep = 2f * math.PI / segments;
-      float3 prev = center + (tangent * math.cos(0f) + bitangent * math.sin(0f)) * radius;
-      for (int i = 1; i <= segments; ++i)
+      var angleStep = 2f * math.PI / segments;
+      var prev = center + tangent * radius;
+      for (var i = 1; i <= segments; ++i)
       {
-        float angle = angleStep * i;
-        float3 next = center + (tangent * math.cos(angle) + bitangent * math.sin(angle)) * radius;
+        var angle = angleStep * i;
+        var next = center +
+          (tangent * math.cos(angle) + bitangent * math.sin(angle)) * radius;
         Debug.DrawLine(prev, next, color, duration);
         prev = next;
       }
@@ -123,13 +125,14 @@ namespace HoangNam.WorldConfig
       ColorIndex colorIndex = 0,
       float colorAlpha = 1.0f,
       int segments = 24,
-      float duration = 0f
-    )
+      float duration = 0f)
     {
 #if UNITY_EDITOR
       if (radius <= 0f)
       {
-        DrawLine(center, center + new float3(0f, 0.01f, 0f), colorIndex, duration);
+        // FIX: colorAlpha was missing, so duration landed in the alpha slot
+        DrawLine(center, center + new float3(0f, 0.01f, 0f),
+          colorIndex, colorAlpha, duration);
         return;
       }
       // XY plane
@@ -151,17 +154,16 @@ namespace HoangNam.WorldConfig
       ColorIndex colorIndex = ColorIndex.None,
       float colorAlpha = 1.0f,
       int segments = 24,
-      float duration = 0
-    )
+      float duration = 0)
     {
+#if UNITY_EDITOR
       DrawSphere(start, radius, colorIndex, colorAlpha, segments, duration);
       DrawSphere(end, radius * .5f, colorIndex, colorAlpha, segments, duration);
       DrawLine(start, end, colorIndex, colorAlpha, duration);
+#endif
     }
 
-    /// <summary>
-    /// only work in OnDrawGizmos
-    /// </summary>
+    // Gizmos only work in OnDrawGizmos (managed, NOT Burst-safe)
     public static void GizmosDrawCircle(
       Vector3 center, float3 normal, float radius, int segments = 48)
     {
@@ -169,18 +171,17 @@ namespace HoangNam.WorldConfig
       BuildOrthonormalBasisesBy(n, out var t, out var b);
 
       var prev = center + (Vector3)(t * radius);
-      for (int i = 1; i <= segments; ++i)
+      for (var i = 1; i <= segments; ++i)
       {
         var angle = (float)i / segments * math.PI * 2f;
-        var next = center + (Vector3)((t * math.cos(angle) + b * math.sin(angle)) * radius);
+        var next = center +
+          (Vector3)((t * math.cos(angle) + b * math.sin(angle)) * radius);
         Gizmos.DrawLine(prev, next);
         prev = next;
       }
     }
 
-    /// <summary>
-    /// only work in OnDrawGizmos
-    /// </summary>
+    // Gizmos only work in OnDrawGizmos (managed, NOT Burst-safe)
     public static void GizmosDrawCone(
       Vector3 origin, float3 dir, float halfAngleRad, float length, int segments = 32)
     {
@@ -192,57 +193,59 @@ namespace HoangNam.WorldConfig
       var ringCenter = origin + tipOffset;
 
       var prev = ringCenter + (Vector3)(t * ringRadius);
-      for (int i = 1; i <= segments; ++i)
+      for (var i = 1; i <= segments; ++i)
       {
         var angle = (float)i / segments * math.PI * 2f;
-        var next = ringCenter + (Vector3)((t * math.cos(angle) + b * math.sin(angle)) * ringRadius);
+        var next = ringCenter +
+          (Vector3)((t * math.cos(angle) + b * math.sin(angle)) * ringRadius);
         Gizmos.DrawLine(prev, next);
         prev = next;
       }
 
-      for (int i = 0; i < 8; ++i)
+      for (var i = 0; i < 8; ++i)
       {
         var angle = (float)i / 8 * math.PI * 2f;
-        var rim = ringCenter + (Vector3)((t * math.cos(angle) + b * math.sin(angle)) * ringRadius);
+        var rim = ringCenter +
+          (Vector3)((t * math.cos(angle) + b * math.sin(angle)) * ringRadius);
         Gizmos.DrawLine(origin, rim);
       }
     }
 
+    // FIX: Burst-safe. No managed array, no local function, editor only.
     public static void DrawWireBox(
       float3 center,
       quaternion rotation,
       float3 size,
       Color color,
       float duration = 0f,
-      bool depthTest = true
-    )
+      bool depthTest = true)
     {
-      float3 h = size * 0.5f;
-
-      float3[] p =
+#if UNITY_EDITOR
+      var h = size * 0.5f;
+      for (var i = 0; i < 4; ++i)
       {
-      new(-h.x,-h.y,-h.z),
-      new( h.x,-h.y,-h.z),
-      new( h.x,-h.y, h.z),
-      new(-h.x,-h.y, h.z),
-
-      new(-h.x, h.y,-h.z),
-      new( h.x, h.y,-h.z),
-      new( h.x, h.y, h.z),
-      new(-h.x, h.y, h.z)
-      };
-
-      for (int i = 0; i < 8; i++)
-        p[i] = math.rotate(rotation, p[i]) + center;
-
-      DrawEdge(0, 1); DrawEdge(1, 2); DrawEdge(2, 3); DrawEdge(3, 0);
-      DrawEdge(4, 5); DrawEdge(5, 6); DrawEdge(6, 7); DrawEdge(7, 4);
-      DrawEdge(0, 4); DrawEdge(1, 5); DrawEdge(2, 6); DrawEdge(3, 7);
-
-      void DrawEdge(int a, int b)
-      {
-        Debug.DrawLine(p[a], p[b], color, duration, depthTest);
+        var next = (i + 1) % 4;
+        var a = BoxCorner(i, h, rotation, center);
+        var b = BoxCorner(next, h, rotation, center);
+        var aTop = BoxCorner(i + 4, h, rotation, center);
+        var bTop = BoxCorner(next + 4, h, rotation, center);
+        Debug.DrawLine(a, b, color, duration, depthTest);       // bottom edge
+        Debug.DrawLine(aTop, bTop, color, duration, depthTest); // top edge
+        Debug.DrawLine(a, aTop, color, duration, depthTest);    // vertical edge
       }
+#endif
     }
+
+#if UNITY_EDITOR
+    // index 0-3 = bottom (clockwise), 4-7 = top
+    static float3 BoxCorner(int index, float3 h, quaternion rotation, float3 center)
+    {
+      var i = index & 3;
+      var x = (i == 1 || i == 2) ? h.x : -h.x;
+      var z = (i == 2 || i == 3) ? h.z : -h.z;
+      var y = index >= 4 ? h.y : -h.y;
+      return math.rotate(rotation, new float3(x, y, z)) + center;
+    }
+#endif
   }
 }
