@@ -36,8 +36,7 @@ namespace HoangNam.WorldConfig
     public static float3 ProjectPointToLine(
       float3 givenPoint,
       float3 lineOrigin,
-      float3 lineUnitDirection
-    )
+      float3 lineUnitDirection)
     {
       var r = givenPoint - lineOrigin;
       var n = new float3(-lineUnitDirection.y, lineUnitDirection.x, 0);
@@ -53,8 +52,7 @@ namespace HoangNam.WorldConfig
       float3 startPos,
       float3 targetPos,
       float t,
-      out float3 nextPos
-    )
+      out float3 nextPos)
     {
       nextPos = Lerp(startPos, targetPos, t);
     }
@@ -66,8 +64,7 @@ namespace HoangNam.WorldConfig
       float speed,
       float dt,
       out float t,
-      out float3 nextPos
-    )
+      out float3 nextPos)
     {
       var distanceFromStart = math.length(currentPos - startPos);
       var totalDistance = math.length(targetPos - startPos);
@@ -85,8 +82,7 @@ namespace HoangNam.WorldConfig
       float dt,
       out float t,
       out float3 nextPos,
-      out int nextIdx
-    )
+      out int nextIdx)
     {
       t = 1;
       nextPos = currentPos;
@@ -119,8 +115,7 @@ namespace HoangNam.WorldConfig
       quaternion rotation,
       out float3 right,
       out float3 up,
-      out float3 forward
-    )
+      out float3 forward)
     {
       var worldRight = new float3(1, 0, 0);
       var worldUp = new float3(0, 1, 0);
@@ -131,14 +126,18 @@ namespace HoangNam.WorldConfig
     }
 
     public static void BuildOrthonormalBasisesBy(
-      float3 direction, out float3 right, out float3 up
-    )
+      float3 direction, out float3 right, out float3 up)
     {
       var _up = new float3(0, 1, 0);
       if (direction.y > .99f)
       {
         direction = _up;
         _up = new float3(0, 0, -1);
+      }
+      else if (direction.y < -.99f)
+      {
+        direction = new float3(0, -1, 0);
+        _up = new float3(0, 0, 1);
       }
       right = math.cross(direction, _up);
       up = math.cross(right, direction);
